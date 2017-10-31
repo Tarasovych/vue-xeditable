@@ -7,7 +7,7 @@
             @blur='editable_changed'
             @keydown='keydown'
             v-if='type == "text"'
-            class='vue-form-control'>
+            :class='"vue-form-control " + input_class'>
       <textarea @blur='editable_changed'
                 @keydown='keydown'
                 v-else-if='type == "textarea"'
@@ -17,10 +17,10 @@
             @blur='editable_changed'
             @keydown='keydown'
             v-if='type == "number"'
-            class='vue-form-control'>
+            :class='"vue-form-control " + input_class'>
       <select @change='editable_changed'
               v-if='type == "select"'
-              class='vue-form-control'>
+              :class='"vue-form-control " + input_class'>
         <option v-for='option in options' :value="option[1]">{{option[0]}}</option>
       </select>
       <quill-editor :content='val'
@@ -36,8 +36,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import axios from 'axios'
 import VueQuillEditor from 'vue-quill-editor'
 
 export default {
@@ -54,6 +52,16 @@ export default {
     }
   },
   props: {
+    loading: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    input_class: {
+      type: 'string',
+      required: false,
+      default: ''
+    },
     onblur: {
       type: Function,
       required: false,
@@ -132,7 +140,6 @@ export default {
   data () {
     return {
       editable_mode: false,
-      loading: false,
       val: this.value
     }
   },
@@ -208,35 +215,10 @@ export default {
       if (value != this.val) this.$emit('change', value, this.val);
       this.val = value;
       this.loading = false;
-    },
-    value_change_error(value) {
-      this.onblur();
-      this.loading = false;
-    },
-    send_request(value) {
-      if (value == this.val) { return }
-      this.loading = true;
-      let data = {}
-      data[this.attr] = value
-      if (this.resource) {
-        let temp = {};
-        temp[this.resource] = data;
-        data = temp;
-      }
-      axios({
-        method: this.method,
-        url: this.url,
-        data: data
-      }).then(response => {
-        this.value_did_changed(value)
-      }).catch(error =>{
-        this.loading = false;
-      });
     }
   }
 }
 </script>
-
 <style>
   .vue-form-control {
     display: block;
