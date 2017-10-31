@@ -23,7 +23,7 @@
               class='vue-form-control'>
         <option v-for='option in options' :value="option[1]">{{option[0]}}</option>
       </select>
-      <quill-editor v-model="val"
+      <quill-editor :content='val'
                     ref="myQuillEditor"
                     :options="editorOption"
                     @blur="editable_changed"
@@ -38,7 +38,6 @@
 <script>
 import Vue from 'vue'
 import axios from 'axios'
-import Quill from 'quill'
 import VueQuillEditor from 'vue-quill-editor'
 
 export default {
@@ -137,22 +136,13 @@ export default {
       val: this.value
     }
   },
-  watch: {
-    value(val) {
-      this.val = val;
-    }
-  },
   methods: {
     display_class() {
-      if (this.val == null || this.val == '') {
-        return 'vue-editable-empty vue-editable-value';
-      }
+      if (this.val == null || this.val == '') return 'vue-editable-empty vue-editable-value';
       return 'vue-editable-value';
     },
     display_value() {
-      if (this.val == null || this.val == '') {
-        return this.empty;
-      }
+      if (this.val == null || this.val == '') return this.empty;
       if (this.type == 'select') {
         for(let option of this.options) {
           if (option[1] == this.val) return option[0]
@@ -165,10 +155,11 @@ export default {
       let that = this;
       if (this.editable_mode) {
         setTimeout(function() {
-          let inputs = e.target.nextElementSibling.children
-          if (this.type == 'quill') {
-            this.editor.focus()
+          if (that.type == 'quill') {
+            that.editor.root.focus()
           } else {
+            let inputs = null;
+            if (e.target.nextElementSibling) inputs = e.target.nextElementSibling.children
             for (let input of inputs) { input.focus() }
           }
           that.$emit('show');
@@ -208,12 +199,13 @@ export default {
       } else {
         this.value_did_changed(value)
       }
-      this.$emit('change', value);
     },
     value_did_changed(value) {
       this.editable_mode = false;
       this.onblur();
       this.$emit('update:value', value)
+      console.log(value)
+      if (value != this.val) this.$emit('change', value, this.val);
       this.val = value;
       this.loading = false;
     },

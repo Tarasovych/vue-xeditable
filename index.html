@@ -12,35 +12,38 @@
         Better editable element in Vue 2.x
       </h5>
       <!-- <a href='https://github.com/Kar-Wai-Wong/vue-editable' target='_blank'>GITHUB</a> -->
+      <ol>
+        <li v-for= 'item of updateList' v-html='item'></li>
+      </ol>
       <div class='content'>
         <h4>
           Single line text Editable
         </h4>
-        <pre>&lt;editable value.sync='{{first}}'&gt;&lt;/editable&gt;</pre>
-        <editable :value.sync='first'></editable>
+        <pre>&lt;editable value.sync='{{first}}' @change='displayUpdate' &gt;&lt;/editable&gt;</pre>
+        <editable :value.sync='first' @change='displayUpdate'></editable>
         <h4>
           Mutiple line text Editable
         </h4>
-        <pre>&lt;script&gt;second = '{{second}}'&lt;/script&gt;</br>&lt;editable :value="{{second}}" type='textarea'&gt;&lt;/editable&gt;</pre>
-        <editable :value.sync="second" type='textarea'></editable>
+        <pre>&lt;script&gt;second = '{{second}}'&lt;/script&gt;</br>&lt;editable :value="{{second}}" @change='displayUpdate' type='textarea'&gt;&lt;/editable&gt;</pre>
+        <editable :value.sync="second" type='textarea' @change='displayUpdate'></editable>
         <!-- <editable value='tester'></editable> -->
         <h4>
           Number Editable
         </h4>
         <pre>&lt;editable type='number' value={{third}}&gt;&lt;/editable&gt;</pre>
-        <editable :value.sync='third' type='number'></editable>
+        <editable :value.sync='third' type='number' @change='displayUpdate'></editable>
 
         <h4>
           Select Editable
         </h4>
-        <pre>&lt;script&gt;options = {{JSON.stringify(options)}}&lt;/script&gt;</br>&lt;editable type='select' value={{forth}} :options='options'&gt;&lt;/editable&gt;</pre>
-        <editable :value.sync='forth' type='select' :options='options'></editable>
+        <pre>&lt;script&gt;options = {{JSON.stringify(options)}}&lt;/script&gt;</br>&lt;editable type='select' value={{forth}} @change='displayUpdate' :options='options'&gt;&lt;/editable&gt;</pre>
+        <editable :value.sync='forth' type='select' :options='options' @change='displayUpdate'></editable>
         value is {{forth}}
         <h4>
           QUILL Editable
         </h4>
-        <pre>&lt;editable type='quill' value="{{fifth}}"&gt;&lt;/editable&gt;</pre>
-        <editable :value.sync='fifth' type='quill'></editable>
+        <pre>&lt;editable type='quill' value="{{fifth}}" @change='displayUpdate' &gt;&lt;/editable&gt;</pre>
+        <editable :value.sync='fifth' type='quill' @change='displayUpdate'></editable>
       </div>
 
     </div>
@@ -52,12 +55,19 @@
       new Vue({
         el: '#app',
         data: {
+          updateList: [],
           first: 'Do not go gentle into that good night',
           second: "Do not go gentle into that good night, \n\Old age should burn and rave at close of day; \n\Rage, rage against the dying of the light.",
           third: 1,
           forth: 1,
           options: [['Gold', 1], ['Silver', 2], ['Bronze', 3]],
           fifth: 'Do not go <strong style="color: rgb(230, 0, 0);"><em>gentle</em></strong> into that good night'
+        },
+        methods: {
+          displayUpdate(value, old_value) {
+            text = `<b style='color:red'>update</b> as ${value},\n <b style='color:blue'>old value</b> is ${old_value}`
+            this.updateList.push(text)
+          }
         }
       })
       
@@ -79,15 +89,10 @@
       border-radius: 5px;
       box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
     }
-    .vue-editable-value {
-      color: #17c;
-      border-bottom: 1px dashed #07c;
-      line-height: 22px;
-    }
     h1 {
-        margin: 0em;
-        text-align: center;
-        color: #42b983;
+      margin: 0em;
+      text-align: center;
+      color: #42b983;
     }
     h5 {
       color: #555;
@@ -126,6 +131,10 @@
     }
     .content {
       
+    }
+    ol li {
+      line-break: normal;
+      white-space: pre-line;
     }
   </style>
 </html>
