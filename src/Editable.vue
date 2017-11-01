@@ -242,6 +242,7 @@ export default {
     display: inline-block;
   }
   .vue_editable .vue-editable-value {
+    border-bottom: 1px dashed #07c;
     white-space: pre-wrap;
   }
   .vue_editable:hover {
