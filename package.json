@@ -10,7 +10,8 @@
   "dependencies": {
     "css-loader": "^0.28.7",
     "style-loader": "^0.18.2",
-    "vue-quill-editor": "^2.3.2"
+    "vue-quill-editor": "^2.3.2",
+    "wysihtml": "^0.6.0-beta1"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",
