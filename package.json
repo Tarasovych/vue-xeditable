@@ -1,7 +1,7 @@
 {
   "name": "vue-xeditable",
   "description": "Vue Editable Component",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "author": "Madao-3 <chrishyman256@gmail.com>",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
