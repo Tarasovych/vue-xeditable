@@ -16,12 +16,12 @@
       <editable v-model='value1'></editable>
       <pre><code highlightjs="<editable v-model='value1'></editable>" class="html" :display='display'></code></pre>
 
-      <h6>Toggle Display useage</h6>
+      <h6>Toggle Display And Callback useage</h6>
       <p>
         <button @click='display = !display'>Toggle Display（Now is {{display}}）</button>
       </p>
-      <editable :display='display'></editable>
-      <pre><code highlightjs="<editable :display='display'></editable>" class="html"></code></pre>
+      <editable :display='display' @change='function(val){alert(val)}'></editable>
+      <pre><code highlightjs="<editable :display='display' @change='function(val){alert(val)}'></editable>" class="html"></code></pre>
 
       <h6>Textarea useage</h6>
       <pre>{{value2}}</pre>

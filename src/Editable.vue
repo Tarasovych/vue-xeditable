@@ -13,11 +13,6 @@
   import './editable/js/bootstrap-editable.js'
   import './editable/js/wysihtml5.js'
 
-  $.fn.editable.defaults.mode = 'inline';
-  $.fn.editable.defaults.onblur = 'submit';
-  $.fn.editable.defaults.showbuttons = false;
-  $.fn.editable.defaults.clear = false;
-
   export default {
     props:{
       type: {
@@ -67,7 +62,7 @@
       }
     },
     watch: {
-      'display': function (value) {
+      display: function (value) {
         let input_el = $(this.$el)
         let action = value ? 'show' : 'hide'
         input_el.editable(action)
@@ -81,10 +76,14 @@
     mounted(){
       let self = this;
       let el = $(this.$el)
-      if (el.data('editable')) {
-        el.editable().destroy()
+      if (el.data('editable')) el.editable().destroy()
+      let defaultOption = {
+        mode: 'inline',
+        onblur: 'submit',
+        showbuttons: false,
+        clear: false
       }
-      let option = Object.assign(this.ajaxOptions, this.option)
+      let option = Object.assign(defaultOption, this.ajaxOptions, this.option)
       el.editable(option).on('shown', function(e,editble){
         self.shown();
       }).on('hidden', function(e, reason){
@@ -96,9 +95,10 @@
     },
     methods: {
       handleChange(value) {
+        let self = this;
         this.value = value;
-        this.$emit('change', this.value);
-        this.$emit('input', this.value);
+        self.$emit('input', self.value);
+        self.$emit('change', self.value);
       }
     }
   }
