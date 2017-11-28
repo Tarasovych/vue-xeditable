@@ -2,16 +2,18 @@
   <a href="javascript:;"
      :data-type="type"
      :disabled='disabled'
-     :emptytext='emptytext'>{{value}}</a>
+     :emptytext='emptytext' v-html='value'></a>
 </template>
 <script>
+
   import './editable/css/bootstrap.min.css'
   import './editable/css/bootstrap-editable.css'
   import './editable/css/bootstrap-wysihtml5.css'
 
-  import './editable/js/bootstrap.min.js'
+  import './editable/js/bootstrap.js'
   import './editable/js/bootstrap-editable.js'
   import './editable/js/wysihtml5.js'
+
 
   export default {
     props:{
@@ -69,36 +71,93 @@
       }
     },
     data() {
-
+      return {}
     },
     created() {
     },
     mounted(){
-      let self = this;
-      let el = $(this.$el)
-      if (el.data('editable')) el.editable().destroy()
-      let defaultOption = {
-        mode: 'inline',
-        onblur: 'submit',
-        showbuttons: false,
-        clear: false
-      }
-      let option = Object.assign(defaultOption, this.ajaxOptions, this.option)
-      el.editable(option).on('shown', function(e,editble){
-        self.shown();
-      }).on('hidden', function(e, reason){
-        self.hidden();
-      }).on('save', function(e, params) {
-        if (params.newValue == self.value) return
-        self.handleChange(params.newValue)
-      });
+      this.create_editable_el();
     },
     methods: {
+      create_editable_el() {
+        let self = this;
+        let el = $(this.$el)
+        if (el.data('editable')) {
+          el.data().editable.destroy()
+          debugger
+        }
+        let defaultOption = {
+          mode: 'inline',
+          onblur: 'submit',
+          showbuttons: false,
+          clear: false
+        }
+        if (this.type == 'wysihtml5') {
+          defaultOption.wysihtml5 = {
+            'font-styles': false,
+            color: true,
+            emphasis: true,
+            html: false,
+            image: false,
+            link: false,
+            blockquote: false,
+            fa: true,
+            lists: true,
+            stylesheets: ["https://images.cdn.uniqueway.com/wysiwyg-color.css"],
+            events: {},
+            supportTouchDevices: true,
+            parserRules: {
+              classes: {
+                'wysiwyg-color-clear': 1,
+                'wysiwyg-color-first': 1,
+                'wysiwyg-color-second': 1,
+                'wysiwyg-color-three': 1
+              },
+              tags: {
+                strong: {},
+                b:      {},
+                i:      {},
+                br:     {},
+                em:     {},
+                p:      {},
+                span:   {},
+                ul:     {},
+                ol:     {},
+                li:     {},
+                div:  "span",
+                h1:  "span",
+                h2:  "span",
+                h3:  "span",
+                h4:  "span",
+                h5:  "span",
+                a:   "span",
+                img: {
+                  remove: 1
+                }
+              }
+            },
+            locale: 'en'
+          }
+        }
+        defaultOption.emptytext = this.emptytext
+        let option = Object.assign(defaultOption, {ajaxOptions: this.ajaxOptions}, this.option)
+        el.editable(option).on('shown', function(e,editble){
+          self.shown();
+        }).on('hidden', function(e, reason){
+          self.hidden();
+        }).on('save', function(e, params) {
+          if (params.newValue == self.value) return
+          self.handleChange(params.newValue)
+        });
+      },
       handleChange(value) {
         let self = this;
         this.value = value;
         self.$emit('input', self.value);
         self.$emit('change', self.value);
+        setTimeout(function(){
+          $(self.$el).editable('setValue', self.value)
+        }, 100)
       }
     }
   }

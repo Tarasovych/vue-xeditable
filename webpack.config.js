@@ -42,9 +42,6 @@ module.exports = {
       'vue$': 'vue/dist/vue.esm.js',
     }
   },
-  externals: {
-     jquery: "jQuery"
-   },
   devServer: {
     historyApiFallback: true,
     noInfo: true
