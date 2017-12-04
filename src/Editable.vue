@@ -5,18 +5,12 @@
      :emptytext='emptytext' v-html='value'></a>
 </template>
 <script>
-
-  import './editable/css/bootstrap.min.css'
-  import './editable/css/bootstrap-editable.css'
-  import './editable/css/bootstrap-wysihtml5.css'
-
-  import './editable/js/bootstrap.js'
-  import './editable/js/bootstrap-editable.js'
-  import './editable/js/wysihtml5.js'
-
-
   export default {
     props:{
+      contentEditable: {
+        type: Boolean,
+        default: true
+      },
       type: {
         type: String,
         default: 'text'
@@ -24,6 +18,10 @@
       value: {
         type: String,
         default: ''
+      },
+      source: {
+        type: Array,
+        default: function() { return [] }
       },
       ajaxOptions: {
         type: Object,
@@ -141,6 +139,9 @@
         }
         defaultOption.emptytext = this.emptytext
         let option = Object.assign(defaultOption, {ajaxOptions: this.ajaxOptions}, this.option)
+        if (this.source) {
+          option.source = this.source
+        }
         el.editable(option).on('shown', function(e,editble){
           self.shown();
         }).on('hidden', function(e, reason){
