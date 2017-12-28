@@ -2,8 +2,7 @@
 [![](https://badge.juejin.im/entry/59c08ef5f265da065d2b6821/likes.svg?style=flat-square)](https://juejin.im/post/59c08ed2f265da06611f67c4)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/Kar-Wai-Wong/vue-xeditable/master/LICENSE)
 
-
-Better editable element in Vue
+Vue Editable Component, base on X-Editable
 
 # Example
 [DEMO PAGE](https://kar-wai-wong.github.io/vue-xeditable/)
@@ -31,21 +30,8 @@ new Vue({
 
 ```
 
-## Editable with Request
-```
-<editable value='resource_title' url='resource_url' attr='title' resource='resource_name' method='PUT'></editable>
-```
-if you finish a edit,you will send a request like:
-```
-Request URL:[resource_url]
-Request Method:PUT
-
---------
-Request Payload
-resource:
-    title: 'your edit'
-
-```
+## Base
+Credit by [X-editable](https://vitalets.github.io/x-editable/docs.html).
 
 # Support Types
-**text**, **textarea**, **number**, **text**, **quill(rich text editor)**
+**text**, **textarea**, **number**, **text**, **wysihtml5**, lots else.
