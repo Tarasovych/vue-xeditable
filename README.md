@@ -1,5 +1,5 @@
 # vue-xeditable
-[![](https://badge.juejin.im/entry/5a44aaea6fb9a0450c49b63e/likes.svg?style=flat-square)](https://juejin.im/post/5a44aaea6fb9a0450c49b63e)
+[![](https://badge.juejin.im/entry/5a44aaea6fb9a0450c49b63e/likes.svg?style=flat-square)](https://juejin.im/post/5a44aadaf265da4327188822)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/Kar-Wai-Wong/vue-xeditable/master/LICENSE)
 
 Vue Editable Component, base on X-Editable
