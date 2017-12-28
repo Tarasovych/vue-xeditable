@@ -2,7 +2,7 @@
   <a href="javascript:;"
      :data-type="type"
      :disabled='disabled'
-     :emptytext='emptytext' v-html='value'></a>
+     :emptytext='emptytext' v-html='display_value()'></a>
 </template>
 <script>
   export default {
@@ -18,10 +18,6 @@
       value: {
         type: String,
         default: ''
-      },
-      source: {
-        type: Array,
-        default: function() { return [] }
       },
       ajaxOptions: {
         type: Object,
@@ -77,13 +73,22 @@
       this.create_editable_el();
     },
     methods: {
+      display_value() {
+        if (this.type == 'select'
+            && this.option.source
+            && this.option.source.length) {
+          for(let item of this.option.source) {
+            if (item.value == this.value) {
+              return item.text
+            }
+          }
+        }
+        return this.value
+      },
       create_editable_el() {
         let self = this;
         let el = $(this.$el)
-        if (el.data('editable')) {
-          el.data().editable.destroy()
-          debugger
-        }
+        if (el.data('editable')) el.data().editable.destroy()
         let defaultOption = {
           mode: 'inline',
           onblur: 'submit',
@@ -91,6 +96,7 @@
           clear: false
         }
         if (this.type == 'wysihtml5') {
+          defaultOption.escape = false;
           defaultOption.wysihtml5 = {
             'font-styles': false,
             color: true,
@@ -139,19 +145,33 @@
         }
         defaultOption.emptytext = this.emptytext
         let option = Object.assign(defaultOption, {ajaxOptions: this.ajaxOptions}, this.option)
-        if (this.source) {
-          option.source = this.source
-        }
-        el.editable(option).on('shown', function(e,editble){
+        option.value = this.value
+        el.data('savable', false)
+        el.editable(option).on('shown', function(e,editble) {
           self.shown();
-        }).on('hidden', function(e, reason){
+          el.data('savable', false)
+          setTimeout(function(){
+            el.data('savable', true)
+          }, 500)
+        }).on('hidden', function(e, reason) {
           self.hidden();
+          setTimeout(function(){
+            el.data('savable', false)
+          }, 100)
         }).on('save', function(e, params) {
+          console.log(params, self.value)
+          if (!el.data('savable')) {
+            setTimeout(function(){
+              el.editable('setValue', self.value);
+            }, 100)
+            return
+          }
           if (params.newValue == self.value) return
           self.handleChange(params.newValue)
         });
       },
       handleChange(value) {
+
         let self = this;
         this.value = value;
         self.$emit('input', self.value);
