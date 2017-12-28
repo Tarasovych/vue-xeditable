@@ -1,7 +1,7 @@
 {
   "name": "vue-xeditable",
-  "description": "Vue Editable Component",
-  "version": "1.1.0",
+  "description": "Vue Editable Component, base on X-Editable",
+  "version": "1.1.1",
   "author": "Madao-3 <chrishyman256@gmail.com>",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
@@ -9,11 +9,7 @@
   },
   "dependencies": {
     "css-loader": "^0.28.7",
-    "install": "^0.10.2",
-    "jquery": "^3.2.1",
-    "style-loader": "^0.18.2",
-    "vue-quill-editor": "^2.3.2",
-    "wysihtml": "^0.6.0-beta1"
+    "style-loader": "^0.18.2"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",

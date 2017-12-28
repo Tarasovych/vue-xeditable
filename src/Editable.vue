@@ -159,7 +159,6 @@
             el.data('savable', false)
           }, 100)
         }).on('save', function(e, params) {
-          console.log(params, self.value)
           if (!el.data('savable')) {
             setTimeout(function(){
               el.editable('setValue', self.value);
@@ -178,7 +177,7 @@
         self.$emit('change', self.value);
         setTimeout(function(){
           $(self.$el).editable('setValue', self.value)
-        }, 100)
+        }, 101)
       }
     }
   }
