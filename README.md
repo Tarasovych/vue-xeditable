@@ -22,12 +22,14 @@ new Vue({
   el: '#app',
   components: {
     'editable': Editable
+  },
+  data: {
+    value1: 'value'
   }
 })
 
 
-<editable value.sync='Do not go gentle into that good night'></editable>
-
+<editable v-model='value1'></editable>
 ```
 
 ## Base
